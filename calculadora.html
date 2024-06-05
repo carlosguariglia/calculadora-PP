@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora</title>
+    <style>
+        :root {
+            --bg-color: #f0f0f0;
+            --calculator-bg: #fff;
+            --display-bg: #222;
+            --display-color: #fff;
+            --button-bg: #ddd;
+            --button-hover-bg: #ccc;
+            --operator-bg: #f9a825;
+            --operator-hover-bg: #f57f17;
+            --equal-bg: #388e3c;
+            --equal-hover-bg: #2e7d32;
+            --clear-bg: #d32f2f;
+            --clear-hover-bg: #c62828;
+            --memory-bg: #1976d2;
+            --memory-hover-bg: #1565c0;
+            --text-color: #000;
+        }
+        .dark-theme {
+            --bg-color: #1e1e1e;
+            --calculator-bg: #333;
+            --display-bg: #fff;
+            --display-color: #000;
+            --button-bg: #555;
+            --button-hover-bg: #666;
+            --operator-bg: #f9a825;
+            --operator-hover-bg: #f57f17;
+            --equal-bg: #388e3c;
+            --equal-hover-bg: #2e7d32;
+            --clear-bg: #d32f2f;
+            --clear-hover-bg: #c62828;
+            --memory-bg: #1976d2;
+            --memory-hover-bg: #1565c0;
+            --text-color: #fff;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: var(--bg-color);
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: var(--text-color);
+        }
+        .calculator {
+            background-color: var(--calculator-bg);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+        .display {
+            width: 100%;
+            height: 50px;
+            background-color: var(--display-bg);
+            color: var(--display-color);
+            text-align: right;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-size: 2em;
+            box-sizing: border-box;
+        }
+        .history {
+            width: 100%;
+            height: 100px;
+            background-color: #eee;
+            color: #000;
+            text-align: left;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 0.8em;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        .button {
+            padding: 20px;
+            font-size: 1.5em;
+            border: none;
+            border-radius: 5px;
+            background-color: var(--button-bg);
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+        .button:hover {
+            background-color: var(--button-hover-bg);
+        }
+        .button:active {
+            transform: scale(0.95);
+        }
+        .button.operator {
+            background-color: var(--operator-bg);
+            color: var(--text-color);
+        }
+        .button.operator:hover {
+            background-color: var(--operator-hover-bg);
+        }
+        .button.equal {
+            background-color: var(--equal-bg);
+            color: var(--text-color);
+            grid-column: span 2;
+        }
+        .button.equal:hover {
+            background-color: var(--equal-hover-bg);
+        }
+        .button.clear {
+            background-color: var(--clear-bg);
+            color: var(--text-color);
+            grid-column: span 2;
+        }
+        .button.clear:hover {
+            background-color: var(--clear-hover-bg);
+        }
+        .button.memory {
+            background-color: var(--memory-bg);
+            color: var(--text-color);
+        }
+        .button.memory:hover {
+            background-color: var(--memory-hover-bg);
+        }
+        .theme-toggle {
+            background-color: var(--button-bg);
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            margin-bottom: 10px;
+        }
+        .theme-toggle:hover {
+            background-color: var(--button-hover-bg);
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <button class="theme-toggle" onclick="toggleTheme()">Cambiar Tema</button>
+        <div class="display" id="display">0</div>
+        <div class="history" id="history"></div>
+        <div class="buttons">
+            <button class="button" onclick="appendNumber(7)">7</button>
+            <button class="button" onclick="appendNumber(8)">8</button>
+            <button class="button" onclick="appendNumber(9)">9</button>
+            <button class="button operator" onclick="chooseOperation('+')">+</button>
+
+            <button class="button" onclick="appendNumber(4)">4</button>
+            <button class="button" onclick="appendNumber(5)">5</button>
+            <button class="button" onclick="appendNumber(6)">6</button>
+            <button class="button operator" onclick="chooseOperation('-')">-</button>
+
+            <button class="button" onclick="appendNumber(1)">1</button>
+            <button class="button" onclick="appendNumber(2)">2</button>
+            <button class="button" onclick="appendNumber(3)">3</button>
+            <button class="button operator" onclick="chooseOperation('*')">*</button>
+
+            <button class="button clear" onclick="clearDisplay()">C</button>
+            <button class="button" onclick="appendNumber(0)">0</button>
+            <button class="button equal" onclick="calculate()">=</button>
+            <button class="button operator" onclick="chooseOperation('/')">/</button>
+
+            <button class="button memory" onclick="memoryStore()">M+</button>
+            <button class="button memory" onclick="memoryRecall()">MR</button>
+            <button class="button memory" onclick="memoryClear()">MC</button>
+        </div>
+    </div>
+
+    <script>
+        let currentOperand = '';
+        let previousOperand = '';
+        let operation = null;
+        let memory = 0;
+        let history = [];
+        let isDarkTheme = false;
+
+        function appendNumber(number) {
+            if (currentOperand.includes('.') && number === '.') return;
+            currentOperand = currentOperand.toString() + number.toString();
+            updateDisplay();
+        }
+
+        function chooseOperation(op) {
+            if (currentOperand === '') return;
+            if (previousOperand !== '') {
+                calculate();
+            }
+            operation = op;
+            previousOperand = currentOperand;
+            currentOperand = '';
+        }
+
+        function calculate() {
+            let computation;
+            const prev = parseFloat(previousOperand);
+            const current = parseFloat(currentOperand);
+            if (isNaN(prev) || isNaN(current)) return;
+            switch (operation) {
+                case '+':
+                    computation = prev + current;
+                    break;
+                case '-':
+                    computation = prev - current;
+                    break;
+                case '*':
+                    computation = prev * current;
+                    break;
+                case '/':
+                    computation = prev / current;
+                    break;
+                default:
+                    return;
+            }
+            addHistory(`${previousOperand} ${operation} ${currentOperand} = ${computation}`);
+            currentOperand = computation;
+            operation = null;
+            previousOperand = '';
+            updateDisplay();
+        }
+
+        function clearDisplay() {
+            currentOperand = '';
+            previousOperand = '';
+            operation = null;
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            const display = document.getElementById('display');
+            display.innerText = currentOperand;
+        }
+
+        function memoryStore() {
+            memory = parseFloat(currentOperand);
+        }
+
+        function memoryRecall() {
+            currentOperand = memory.toString();
+            updateDisplay();
+        }
+
+        function memoryClear() {
+            memory = 0;
+        }
+
+        function addHistory(entry) {
+            history.push(entry);
+            updateHistory();
+        }
+
+        function updateHistory() {
+            const historyDisplay = document.getElementById('history');
+            historyDisplay.innerHTML = history.join('<br>');
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            body.classList.toggle('dark-theme');
+            isDarkTheme = !isDarkTheme;
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key >= 0 && event.key <= 9) {
+                appendNumber(event.key);
+            }
+            if (event.key === '.') {
+                appendNumber(event.key);
+            }
+            if (event.key === '+' || event.key === '-' || event.key === '*' || event.key === '/') {
+                chooseOperation(event.key);
+            }
+            if (event.key === 'Enter' || event.key === '=') {
+                event.preventDefault();
+                calculate();
+            }
+            if (event.key === 'Escape') {
+                clearDisplay();
+            }
+        });
+    </script>
+</body>
+</html>
