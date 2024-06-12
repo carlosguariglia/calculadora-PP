@@ -1,0 +1,289 @@
+/* Calculadora tipo teclado numérico simple
+    Creada por: Juan Carlos Lozano
+    Fecha: https://github.com/juanlomz
+    Fecha: https://twitter.com/juanlomz
+    Creada con HTML, CSS y JavaScript
+    Creada para aprender HTML, CSS y JavaScript
+
+    Tarea: Usando una IA (Chat GPT, Gemini, Copilot, etc) pedir con "educación",
+    saludando primero, una calculadora simple desarrollada en HTML + CSS + JAVASCRIPT,
+    con htaml semántico y pidiendo que comente todo el código para su mejor comprensión.
+
+    Prompt usado a Chatgpt: 
+    YO: Hola Buen Dia!
+
+                ChatGPT:¡Hola! ¡Buenos días! ¿Cómo estás? ¿En qué puedo ayudarte hoy?
+    
+    YO: Necesito una calculadora simple (suma, resta, multiplicacion y division) desarrollada
+    en HTML + CSS + JAVASCRIPT, con html semántico y necesito que comentes todo el código
+    
+                ChatGPT: !Claro! Vamos a crear una calculadora simple usando HTML, CSS y JavaScript.
+                Utilizaremos HTML semántico para estructurar nuestro documento y comentaremos cada
+                parte del código para que sea fácil de entender.
+    
+    (Luego de una muy mala dispocicion de botones, volvi a reformular la pregunta)
+
+    YO: realmente no parece una calculadora. podras mejorarla para que parezca una calculadora
+    igual a un teclado numerico de una pc 
+
+                ChatGPT: Claro, vamos a ajustar el diseño para que la calculadora se parezca más
+                a un teclado numérico tradicional, como el que encontrarías en una PC. 
+                Para lograr esto, haremos los siguientes ajustes:
+
+                Reorganizar los botones en la disposición de un teclado numérico.
+                Estilizar los botones para que sean más grandes y tengan una apariencia de teclado.
+                Agregar un color más distintivo para los botones de acción.
+
+    YO:Perfecto, te felicito! seguramente el Profesor gabriel me va a aprobar la tarea
+                
+                ChatGPT: ¡Me alegra mucho que te haya gustado el resultado! Estoy seguro de que el
+                Profesor Gabriel quedará impresionado con tu trabajo.
+    
+                Si tienes alguna otra pregunta o necesitas más ayuda en el futuro, ya sea con esta u
+                otra tarea, no dudes en pedírmelo. ¡Buena suerte con tu presentación y cualquier proyecto
+                futuro!
+    
+                ¡Felicidades de nuevo y que tengas un excelente día!
+    */
+
+
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Tipo Teclado Numérico</title>
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        /* Contenedor principal de la calculadora */
+        .calculator {
+            width: 320px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Estilo de la pantalla */
+        .display {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        #display {
+            width: 100%;
+            height: 60px;
+            font-size: 2em;
+            text-align: right;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #eaeaea;
+        }
+
+        /* Estilo de los botones */
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            width: 100%;
+        }
+
+        .btn {
+            width: 100%;
+            height: 60px;
+            font-size: 1.5em;
+            border: none;
+            border-radius: 5px;
+            background-color: #f5f5f5;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #ddd;
+        }
+
+        /* Diferenciando botones de acción */
+        [data-action="clear"] {
+            background-color: #ff6666;
+            grid-column: span 2; /* Hacer que el botón "C" ocupe dos columnas */
+        }
+
+        [data-action="backspace"] {
+            background-color: #ffcc66;
+        }
+
+        [data-action="equals"] {
+            background-color: #66ff66;
+            grid-column: span 2; /* Hacer que el botón "=" ocupe dos columnas */
+        }
+
+        [data-action="divide"],
+        [data-action="multiply"],
+        [data-action="subtract"],
+        [data-action="add"] {
+            background-color: #b0e0e6;
+        }
+    </style>
+</head>
+<body>
+    <!-- Contenedor principal de la calculadora -->
+    <main class="calculator">
+        <!-- Pantalla de la calculadora donde se muestra el resultado -->
+        <div class="display">
+            <input type="text" id="display" disabled>
+        </div>
+        <!-- Contenedor de botones -->
+        <section class="buttons">
+            <!-- Filas de botones -->
+            <button class="btn" data-action="clear">C</button>
+            <button class="btn" data-action="backspace">←</button>
+            <button class="btn" data-action="divide">/</button>
+            <button class="btn" data-number="7">7</button>
+            <button class="btn" data-number="8">8</button>
+            <button class="btn" data-number="9">9</button>
+            <button class="btn" data-action="multiply">*</button>
+            <button class="btn" data-number="4">4</button>
+            <button class="btn" data-number="5">5</button>
+            <button class="btn" data-number="6">6</button>
+            <button class="btn" data-action="subtract">-</button>
+            <button class="btn" data-number="1">1</button>
+            <button class="btn" data-number="2">2</button>
+            <button class="btn" data-number="3">3</button>
+            <button class="btn" data-action="add">+</button>
+            <button class="btn" data-number="0">0</button>
+            <button class="btn" data-action="decimal">.</button>
+            <button class="btn" data-action="equals">=</button>
+        </section>
+    </main>
+    <script>
+        // Espera a que el DOM esté completamente cargado antes de ejecutar el script
+        document.addEventListener("DOMContentLoaded", function() {
+            // Referencia al elemento de la pantalla de la calculadora
+            const display = document.getElementById("display");
+
+            // Almacena el estado actual de la calculadora
+            let currentInput = "";
+            let operator = null;
+            let previousInput = "";
+
+            // Función para actualizar la pantalla
+            function updateDisplay(value) {
+                display.value = value;
+            }
+
+            // Maneja los eventos de click en los botones
+            function handleButtonClick(event) {
+                const button = event.target;
+
+                // Acciones basadas en el tipo de botón
+                if (button.dataset.number) {
+                    handleNumber(button.dataset.number);
+                } else if (button.dataset.action) {
+                    handleAction(button.dataset.action);
+                }
+            }
+
+            // Maneja la entrada de números
+            function handleNumber(number) {
+                // Concatenar el número al input actual
+                currentInput += number;
+                updateDisplay(currentInput);
+            }
+
+            // Maneja las acciones de los botones
+            function handleAction(action) {
+                switch(action) {
+                    case "clear":
+                        // Limpiar toda la entrada
+                        currentInput = "";
+                        previousInput = "";
+                        operator = null;
+                        updateDisplay("");
+                        break;
+                    case "backspace":
+                        // Eliminar el último carácter de la entrada
+                        currentInput = currentInput.slice(0, -1);
+                        updateDisplay(currentInput);
+                        break;
+                    case "add":
+                    case "subtract":
+                    case "multiply":
+                    case "divide":
+                        // Guardar el operador y mover el input actual a la variable anterior
+                        operator = action;
+                        previousInput = currentInput;
+                        currentInput = "";
+                        break;
+                    case "decimal":
+                        // Añadir un punto decimal si no está ya presente
+                        if (!currentInput.includes(".")) {
+                            currentInput += ".";
+                            updateDisplay(currentInput);
+                        }
+                        break;
+                    case "equals":
+                        // Calcular el resultado basado en el operador
+                        if (operator && previousInput !== "" && currentInput !== "") {
+                            calculateResult();
+                        }
+                        break;
+                }
+            }
+
+            // Función para calcular el resultado
+            function calculateResult() {
+                const a = parseFloat(previousInput);
+                const b = parseFloat(currentInput);
+                let result;
+
+                switch(operator) {
+                    case "add":
+                        result = a + b;
+                        break;
+                    case "subtract":
+                        result = a - b;
+                        break;
+                    case "multiply":
+                        result = a * b;
+                        break;
+                    case "divide":
+                        result = a / b;
+                        break;
+                }
+
+                // Actualizar la pantalla con el resultado
+                updateDisplay(result);
+                // Reiniciar la entrada actual y el operador
+                currentInput = result.toString();
+                operator = null;
+                previousInput = "";
+            }
+
+            // Agregar un evento de clic a todos los botones
+            document.querySelectorAll(".btn").forEach(button => {
+                button.addEventListener("click", handleButtonClick);
+            });
+        });
+    </script>
+</body>
+</html>
